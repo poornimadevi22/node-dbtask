@@ -16,7 +16,7 @@ app.use(parser.json());
 
 mongoose
 // .connect(`${process.env.MONGODB}/schoolDB`,
-.connect(`${process.env.MONGODB}/schoolDB`,{
+.connect(`${process.env.MONGODB}`,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
 }).then(() => {console.log("Connected to mongoDB...",)

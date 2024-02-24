@@ -15,6 +15,7 @@ app.use(parser.json());
 
 
 mongoose
+// .connect(`${process.env.MONGODB}/schoolDB`,
 .connect(`${process.env.MONGODB}/schoolDB`,{
     useNewUrlParser:true,
     useUnifiedTopology:true,

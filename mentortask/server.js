@@ -5,8 +5,8 @@ const parser=require("body-parser");
 const mentorRoute = require("./routes/mentor");
 const studentRoute = require("./routes/studentRoute");
 
-// const dotenv = require('dotenv');
-// dotenv.config({ path: '.env' });
+const dotenv = require('dotenv');
+dotenv.config({ path: '.env' });
 
 const port=5000;
 const student=require("./models/student")
@@ -15,7 +15,7 @@ const mentor=require("./models/mentor")
 // app.use("/students",studRoute)
 
 app.use(parser.json());
-
+console.log(process.env.MONGODB)
 mongoose
 // .connect(`${process.env.MONGODB}/schoolDB`,
 .connect(`${process.env.MONGODB}`,{

@@ -5,6 +5,9 @@ const parser=require("body-parser");
 const mentorRoute = require("./routes/mentor");
 const studentRoute = require("./routes/studentRoute");
 
+// const dotenv = require('dotenv');
+// dotenv.config({ path: '.env' });
+
 const port=5000;
 const student=require("./models/student")
 const mentor=require("./models/mentor") 
@@ -13,13 +16,12 @@ const mentor=require("./models/mentor")
 
 app.use(parser.json());
 
-
 mongoose
 // .connect(`${process.env.MONGODB}/schoolDB`,
 .connect(`${process.env.MONGODB}`,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
-}).then(() => {console.log("Connected to mongoDB...",)
+}).then(() => {console.log("Connected to mongoDB...",process.env.MONGODB)
     
 }).catch((err) => {
     console.error("not connected to db..",err)

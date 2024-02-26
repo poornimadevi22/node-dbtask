@@ -26,11 +26,13 @@
 </div>
     <script>
 function Add(){
-fetch("http://localhost:5000/listwithmentor")
+fetch("/listwithmentor")
 .then(res =>
 	res.json())
     .then(d => {
-	})
+	}).catch(err=>{
+        console.log('err at add',err)
+    })
 }
 function updateDropdownlist(name){
 
@@ -44,14 +46,16 @@ function updateDropdownlist(name){
 }
 function getStudents(id){
 let fetchRes = fetch(
-"http://localhost:5000/student");
+"/student");
 	
 
 fetchRes.then(res =>
 	res.json()).then(d => {
         // document.getElementById("listDropdown").innerHTML=name+' list'
 		populateStudentsDropdown(d,id)
-	})
+	}).catch(err=>{
+        console.log('err at getStudents',err)
+    })
 }
 
     function populateStudentsDropdown(students,id) {
@@ -73,14 +77,14 @@ fetchRes.then(res =>
 
     function getMentors(id){
 let fetchRes = fetch(
-"http://localhost:5000/mentor");
+"/mentor");
 	
 
 fetchRes.then(res =>
 	res.json()).then(d => {
         // document.getElementById("listDropdown").innerHTML=name+' list'
 		populateMentorsDropdown(d,id)
-	})
+	}).catch(err=>{console.log('errr getMentors',err)})
 }
 
     function populateMentorsDropdown(mentors,id) {

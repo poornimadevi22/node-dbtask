@@ -10,6 +10,14 @@
 <body>
     <h1>Heloo!!!</h1>
     <div class="container">
+        <label for="Student">Student</label>
+        <input type="radio" id="student" name="stud" value="student"  onclick="showForm('student')"></br>
+        
+        <label for="mentor">Mentor</label>
+        <input type="radio" id="mentor" name="stud"onclick="showForm('mentor')" value="mentor"></br>
+        <label for="dropDown" id="listDropdown"></label>
+    </div>
+    <div class="container">
     <form class="form" action="/student" method="PUT" id="studentForm">
         <div class="row">
             <div class="col">
@@ -27,35 +35,36 @@
               <div class="col">
                 <label for="inputtate" class="form-label">Mentor</label>
                 <select id="inputDropdown" name="mentor" class="form-select">
-                  <option selected>Choose...</option>
+                  <option selected>mentor 2...</option>
+                  <option selected>mentor 3...</option>
                 </select>
               </div>
           </div>
           <div class="row py-4">
             <div class="col">
-                <button type="button" onclick="addStudent()" class="btn btn-primary">Submit</button>
+                <button type="button" onclick="addStudent()" class="btn btn-primary">Add </button>
               </div>
           </div>
     </form>
 
-    <form class="form" action="/student" method="PUT" id="mentorForm" hidden>
+    <form class="form" action="/mentor" method="PUT" id="mentorForm" hidden>
         <div class="row">
             <div class="col">
-                <label for="inputtate" class="form-label">Name</label>
-              <input type="text" class="form-control" name="name" placeholder="Name" aria-label="Name">
+                <label for="inputtate" class="form-label">Mentor Name</label>
+              <input type="text" class="form-control" name="mentorName" placeholder="mentorName" aria-label="Name">
             </div>
             <div class="col">
                 <label for="inputtate" class="form-label">Email</label>
-              <input type="text" class="form-control" name="email" placeholder="email" aria-label="email">
+              <input type="text" class="form-control" name="mentorEmail" placeholder="email" aria-label="email">
             </div>
             <div class="col">
-                <label for="inputtate" class="form-label">Class</label>
-                <input type="text" class="form-control" name="class" placeholder="class" aria-label="class">
+                <label for="inputtate" class="form-label">Mentor ID</label>
+                <input type="text" class="form-control" name="mentorId" placeholder="Mentor ID" aria-label="class">
             </div>
           </div>
           <div class="row py-4">
             <div class="col">
-                <button type="button" onclick="addStudent()" class="btn btn-primary">Submit</button>
+                <button type="button" onclick="addmentor()" class="btn btn-primary">Add Mentor</button>
               </div>
           </div>
     </form>
@@ -75,48 +84,92 @@
    <select name="Mentor" id="dropdown2" >
 </select> -->
      
-     
- 
-
-
-
-
-
-
-
-
-
+   
     </form>
-<div>
-    <label for="Student">Student</label>
-    <input type="radio" id="student" name="stud" value="student"  onclick="showForm('student')"></br>
-    
-    <label for="mentor">Mentor</label>
-    <input type="radio" id="mentor" name="stud"onclick="showForm('mentor')" value="mentor"></br>
-    <label for="dropDown" id="listDropdown"></label>
-    
 
-<select name="Student" id="dropdown1" >
-</select>
+<div class="Container"></div>
+<h1 id="listName"></h1>
+<form method="post" action="/student" class="my-4">
+    <!-- <label for="name" class="for"></label>
+    <input type="hidden" name="_csrf" value="ReplaceWithActualToken">
+    <input
+        required
+        placeholder="URL"
+        type="URL"
+        name="fullUrl"
+        id="fullUrl"
+        class="form control"
+    >
+    <button class="btn-btn-success" type="Submit">Submit</button> -->
+</form>
 
+<table>
+    <thead>
+        <tr id="tableHeadRow">      
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+       
+    </tbody>
+</table>
+<style>
+   table,th,tr,td{
+    border: 1px solid grey;
+    box-sizing: border-box;
 
-<button class="add" onclick="getStudents(this.value)">Add</button>
-</div>
+   }
+   th{
+    font-weight:bold ;
+   }
+
+</style>
+
     <script>
 
 
         updateDropdownlist("mentor")
 
-        function showForm(type){
-            if(type==='mentor'){
-                console.log("ment")
-                document.getElementById('mentorForm').style.setProperty("display","block","important")
-                document.getElementById('studentForm').style.setProperty("display","none","important")
-            }else{
-                document.getElementById('mentorForm').style.setProperty("display","none","important")
-                document.getElementById('studentForm').style.setProperty("display","block","important")
-            }
-        }
+        function showForm(type) {
+    if (type === 'mentor') {
+        document.getElementById('listName').innerHTML="Mentors List"
+        console.log("ment")
+        document.getElementById('mentorForm').style.setProperty("display", "block", "important");
+        document.getElementById('studentForm').style.setProperty("display", "none", "important");
+        document.getElementById('tableHeadRow').innerHTML = "<th>mentorName</th><th>mentorEmail</th><th>mentorId</th>";
+        fetch("/mentor")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('tableBody').innerHTML='';
+                console.log(data);
+                data.map((mentor, index) => {
+                    document.getElementById('tableBody').innerHTML += `<tr><td>${mentor.name}</td><td>${mentor.emailId}</td><td>${mentor.id}</td></tr>`;
+                });
+            })
+            .catch(err => {
+                console.log('Error in getMentors', err);
+            });
+        console.log(index);
+    } else {
+        document.getElementById('listName').innerHTML="Students List"
+        document.getElementById('mentorForm').style.setProperty("display", "none", "important");
+        document.getElementById('studentForm').style.setProperty("display", "block", "important");
+        document.getElementById('tableHeadRow').innerHTML = "<th>Name</th><th>Email</th><th>class</th><th>Mentor</th>";
+        fetch("/student")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('tableBody').innerHTML=''
+                console.log(data);
+                data.map((stud, index) => {
+                    document.getElementById('tableBody').innerHTML += `<tr><td>${stud.name}</td><td>${stud.emailId??''}</td><td>${stud.class}</td><td>${stud.mentors.join(', ')}</td></tr>`;
+                });
+            })
+            .catch(err => {
+                console.log('Error in getMentors', err);
+            });
+       
+    }
+}
+
 function Add(){
 fetch("/listwithmentor")
 .then(res =>
@@ -140,15 +193,28 @@ function addStudent(){
     const name=document.getElementsByName('name')[0].value;
     const email=document.getElementsByName('email')[0].value;
     const classValue=document.getElementsByName('class')[0].value;
-    const mentor=document.getElementById('inputDropdown').innerText
+    const mentor=document.getElementById('inputDropdown').value
     const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name:name,email:email,class:classValue,mentor:mentor})
+        body: JSON.stringify({ name:name,emailId:email,class:classValue,mentors:mentor})
     };
      fetch('/student', requestOptions).then(res=>{console.log('res',res)}).catch(err=>{console.error(err)});
+     window.location.reload();
 }
 
+function addmentor(){
+    const name=document.getElementsByName('mentorName')[0].value;
+    const mentorEmail=document.getElementsByName('mentorEmail')[0].value;
+    const mentorId=document.getElementsByName('mentorId')[0].value;
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name:name,emailId:mentorEmail,id:mentorId})
+    };
+     fetch('/mentor', requestOptions).then(res=>{console.log('res',res)}).catch(err=>{console.error(err)});
+     window.location.reload()
+}
 function getStudents(id){
     console.log("fff",id)
 let fetchRes = fetch(
@@ -168,7 +234,7 @@ fetchRes.then(res =>
       const studentSelect = document.getElementById(id);
       deleteDropdown(studentSelect)
       const option1 = document.createElement('option');
-        option1.value = 1;
+        option1.value = 2;
         option1.textContent = "Choose Mentor"; 
       studentSelect.appendChild(option1)
      
@@ -203,8 +269,8 @@ fetchRes.then(res =>
       deleteDropdown(mentorSelect)
       mentors.forEach(mentor => {
         const option = document.createElement('option');
-        option.value = mentor._id; // Assuming mentor has an '_id' field
-        option.textContent = mentor.name; // Assuming mentor has a 'name' field
+        option.value = mentor.name; 
+        option.textContent = mentor.name;   
         mentorSelect.appendChild(option);
       });
     }
